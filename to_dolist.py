@@ -50,10 +50,11 @@ class ToDo:
             print(f"Error: {e}")
             return False
 
-    def add_task(self, title, description, status, due_date, task_type):
+    def add_task(self, title, description, due_date, task_type):
         try:
             query = '''INSERT INTO Task (User_id, Title, Description, Status, Due_date, Task_type)
                        VALUES (%s, %s, %s, %s, %s, %s)'''
+            status = 'pending'
             params = (self.logged_in_user_id, title, description, status, due_date, task_type)
             self.cursor.execute(query, params)
             self.connection.commit()
@@ -61,11 +62,12 @@ class ToDo:
         except Error as e:
             print(f"Error: {e}")
 
-    def update_task(self, task_id, title, description, status, due_date, task_type):
+    def update_task(self, task_id, title, description, due_date, task_type):
         try:
             query = '''UPDATE Task
                        SET Title = %s, Description = %s, Status = %s, Due_date = %s, Task_type = %s
                        WHERE Task_id = %s'''
+            status = 'pending'
             params = (title, description, status, due_date, task_type, task_id)
             self.cursor.execute(query, params)
             self.connection.commit()
@@ -138,19 +140,17 @@ class ToDo:
             if choice == '1':
                 title = input("Enter Task Title: ")
                 description = input("Enter Task Description: ")
-                status = input("Enter new Task Status (pending/done): ")
                 due_date = input("Enter Task Due Date (YYYY-MM-DD): ")
                 task_type = input("Enter Task Type: ")
-                self.add_task(title, description,status, due_date, task_type)
-                # self.task()
+                self.add_task(title, description, due_date, task_type)
+
             elif choice == '2':
                 task_id = input("Enter Task ID to update: ")
                 title = input("Enter new Task Title: ")
                 description = input("Enter new Task Description: ")
-                status = input("Enter new Task Status (pending/done): ")
                 due_date = input("Enter new Task Due Date (YYYY-MM-DD): ")
                 task_type = input("Enter new Task Type: ")
-                self.update_task(task_id, title, description,status,due_date, task_type)
+                self.update_task(task_id, title, description,due_date, task_type)
             elif choice == '3':
                 task_id = input("Enter Task ID to delete: ")
                 self.delete_task(task_id)

@@ -1,7 +1,7 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from email_sender import send_email
-# from demo_oops.Remainder.email_sender import send_email
+
 from to_dolist import ToDo
 
 def fetch_email():
